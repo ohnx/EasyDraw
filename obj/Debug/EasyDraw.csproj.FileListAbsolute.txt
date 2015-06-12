@@ -1,0 +1,15 @@
+d:\mason\documents\visual studio 2013\Projects\EasyDraw\EasyDraw\bin\Debug\EasyDraw.exe.config
+d:\mason\documents\visual studio 2013\Projects\EasyDraw\EasyDraw\bin\Debug\EasyDraw.exe
+d:\mason\documents\visual studio 2013\Projects\EasyDraw\EasyDraw\bin\Debug\EasyDraw.pdb
+d:\mason\documents\visual studio 2013\Projects\EasyDraw\EasyDraw\obj\Debug\MainWindow.baml
+d:\mason\documents\visual studio 2013\Projects\EasyDraw\EasyDraw\obj\Debug\MainWindow.g.cs
+d:\mason\documents\visual studio 2013\Projects\EasyDraw\EasyDraw\obj\Debug\App.g.cs
+d:\mason\documents\visual studio 2013\Projects\EasyDraw\EasyDraw\obj\Debug\EasyDraw_MarkupCompile.cache
+d:\mason\documents\visual studio 2013\Projects\EasyDraw\EasyDraw\obj\Debug\EasyDraw.g.resources
+d:\mason\documents\visual studio 2013\Projects\EasyDraw\EasyDraw\obj\Debug\EasyDraw.Properties.Resources.resources
+d:\mason\documents\visual studio 2013\Projects\EasyDraw\EasyDraw\obj\Debug\EasyDraw.csproj.GenerateResource.Cache
+d:\mason\documents\visual studio 2013\Projects\EasyDraw\EasyDraw\obj\Debug\EasyDraw.exe
+d:\mason\documents\visual studio 2013\Projects\EasyDraw\EasyDraw\obj\Debug\EasyDraw.pdb
+d:\Mason\documents\visual studio 2013\Projects\EasyDraw\EasyDraw\obj\Debug\EasyDraw.csprojResolveAssemblyReference.cache
+d:\Mason\documents\visual studio 2013\Projects\EasyDraw\EasyDraw\obj\Debug\ColorForm.baml
+d:\Mason\documents\visual studio 2013\Projects\EasyDraw\EasyDraw\obj\Debug\ColorForm.g.cs

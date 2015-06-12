@@ -1,0 +1,28 @@
+﻿<Window x:Class="EasyDraw.ColorForm"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Color" Height="500" Width="500">
+    <Grid>
+
+        <TextBlock Text="Red" Margin="10,10,0,0" />
+        <TextBlock Text="Green" Margin="10,45,0,-14"/>
+        <TextBlock Text="Blue" Margin="10,81,0,0"/>
+
+        <Slider Name="redSlider" Minimum="0" Maximum="255" Value="0" Margin="53,10,72,340" ValueChanged="redSlider_ValueChanged" IsSnapToTickEnabled="True" TickFrequency="1" />
+        <Slider Name="greenSlider" Minimum="0" Maximum="255" Value="0" Margin="53,45,72,299" ValueChanged="greenSlider_ValueChanged" IsSnapToTickEnabled="True" TickFrequency="1" />
+        <Slider Name="blueSlider" Minimum="0" Maximum="255" Value="0" Margin="53,81,72,264" ValueChanged="blueSlider_ValueChanged" IsSnapToTickEnabled="True" TickFrequency="1" />
+        <Canvas x:Name="cCanvas" Margin="65,153,10,0"/>
+        <Button x:Name="redBtn" Content="Red" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Height="40" Click="redBtn_Click" Margin="10,239,0,0"/>
+        <Button x:Name="blueBtn" Content="Blue" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Height="40" Margin="10,284,0,0" Click="blueBtn_Click"/>
+        <Button x:Name="greenBtn" Content="Green" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Height="40" Margin="10,329,0,0" Click="greenBtn_Click"/>
+        <Button x:Name="useBtn" Content="Use" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Height="40" Margin="10,419,0,0" Click="useBtn_Click"/>
+        <Button x:Name="cancelBtn" Content="Cancel" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Height="40" Margin="10,374,0,0" Click="cancelBtn_Click"/>
+        <Button x:Name="blackBtn" Content="Black" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Height="40" Margin="10,194,0,0" Click="blackBtn_Click"/>
+        <Button x:Name="yellowBtn" Content="Yellow" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Height="40" Margin="10,149,0,0" Click="yellowBtn_Click"/>
+        <Button x:Name="loadRGB" Content="Load RGB from numbers" HorizontalAlignment="Left" VerticalAlignment="Top" Width="145" Height="40" Margin="337,108,0,0" Click="loadRGB_Click" />
+        <TextBox x:Name="redTxt" HorizontalAlignment="Left" Height="23" Margin="425,10,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="57" PreviewTextInput="NumberValidationTextBox"/>
+        <TextBox x:Name="greenTxt" HorizontalAlignment="Left" Height="23" Margin="425,44,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="57" PreviewTextInput="NumberValidationTextBox"/>
+        <TextBox x:Name="blueTxt" HorizontalAlignment="Left" Height="23" Margin="425,80,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="57" PreviewTextInput="NumberValidationTextBox"/>
+        <Button x:Name="pinkBtn" Content="Pink" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Height="40" Margin="10,104,0,0" Click="pinkBtn_Click"/>
+    </Grid>
+</Window>
