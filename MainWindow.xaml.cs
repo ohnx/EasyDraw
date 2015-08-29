@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Ink;
+using Microsoft.Ink;
 
 namespace EasyDraw
 {
@@ -31,6 +32,7 @@ namespace EasyDraw
             InitializeComponent();
             currColor = Colors.Black;
             changed = false;
+            PenMode.IsChecked = true;
             inkCanvas.Strokes.StrokesChanged += Strokes_StrokesChanged;
         }
 
@@ -39,29 +41,55 @@ namespace EasyDraw
             changed = true;
         }
 
-        private void comboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void modeChange(object sender, RoutedEventArgs e)
         {
-            switch (comboBox.SelectedIndex)
-            {
-                case 0:
-                    inkCanvas.EditingMode = InkCanvasEditingMode.Ink;
-                    break;
-                case 1:
-                    inkCanvas.EditingMode = InkCanvasEditingMode.EraseByPoint;
-                    break;
-                case 2:
-                    inkCanvas.EditingMode = InkCanvasEditingMode.Select;
-                    break;
-                case 3:
-                    inkCanvas.EditingMode = InkCanvasEditingMode.EraseByStroke;
-                    break;
+            try {
+                switch (((MenuItem)sender).Name)
+                {
+                    case "PenMode":
+                        inkCanvas.EditingMode = InkCanvasEditingMode.Ink;
+                        EraserMode.IsChecked = false;
+                        SelectMode.IsChecked = false;
+                        SEraserMode.IsChecked = false;
+                        break;
+                    case "EraserMode":
+                        inkCanvas.EditingMode = InkCanvasEditingMode.EraseByPoint;
+                        PenMode.IsChecked = false;
+                        SelectMode.IsChecked = false;
+                        SEraserMode.IsChecked = false;
+                        break;
+                    case "SelectMode":
+                        inkCanvas.EditingMode = InkCanvasEditingMode.Select;
+                        EraserMode.IsChecked = false;
+                        PenMode.IsChecked = false;
+                        SEraserMode.IsChecked = false;
+                        break;
+                    case "SEraserMode":
+                        inkCanvas.EditingMode = InkCanvasEditingMode.EraseByStroke;
+                        EraserMode.IsChecked = false;
+                        SelectMode.IsChecked = false;
+                        PenMode.IsChecked = false;
+                        break;
+                    default:
+                        break;
+                }
+            } catch (Exception err) {
+
             }
         }
 
         private void brushSize_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            inkCanvas.DefaultDrawingAttributes.Width = brushSize.Value * brushSize.Value;
-            inkCanvas.DefaultDrawingAttributes.Height = brushSize.Value * brushSize.Value;
+            try
+            {
+                inkCanvas.DefaultDrawingAttributes.Width = brushSize.Value * brushSize.Value;
+                inkCanvas.DefaultDrawingAttributes.Height = brushSize.Value * brushSize.Value;
+            }
+            catch (Exception err)
+            {
+
+            }
+
         }
 
         private void ExportButton_Click(object sender, RoutedEventArgs e)
@@ -73,15 +101,43 @@ namespace EasyDraw
             {
                 var fs = new FileStream(saveFileDialog.FileName, FileMode.Create);
                 int marg = int.Parse(this.inkCanvas.Margin.Left.ToString());
-                RenderTargetBitmap rtb =
-                        new RenderTargetBitmap((int)this.inkCanvas.ActualWidth - marg,
-                                (int)this.inkCanvas.ActualHeight - marg, 0, 0,
+                RenderTargetBitmap rtb = new RenderTargetBitmap(
+                            (int)this.inkCanvas.ActualWidth - marg,
+                            (int)this.inkCanvas.ActualHeight - marg, 0, 0,
                             PixelFormats.Default);
                 rtb.Render(this.inkCanvas);
                 BmpBitmapEncoder encoder = new BmpBitmapEncoder();
                 encoder.Frames.Add(BitmapFrame.Create(rtb));
                 encoder.Save(fs);
                 fs.Close();
+            }
+        }
+
+        private void RecognizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            using (MemoryStream ms = new MemoryStream())
+            {
+                inkCanvas.Strokes.Save(ms);
+                var myInkCollector = new InkCollector();
+                var ink = new Ink();
+                ink.Load(ms.ToArray());
+
+                using (RecognizerContext myRecoContext = new RecognizerContext())
+                {
+                    RecognitionStatus status;
+                    myRecoContext.Strokes = ink.Strokes;
+                    var recoResult = myRecoContext.Recognize(out status);
+
+                    if (status == RecognitionStatus.NoError)
+                    {
+                        RecognizedText rt = new RecognizedText(recoResult.TopString);
+                        rt.ShowDialog();
+                    }
+                    else
+                    {
+                        MessageBox.Show("There was an error recognizing text: " + status.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
             }
         }
 

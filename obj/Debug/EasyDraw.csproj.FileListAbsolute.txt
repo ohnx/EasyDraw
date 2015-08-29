@@ -13,3 +13,7 @@ d:\mason\documents\visual studio 2013\Projects\EasyDraw\EasyDraw\obj\Debug\EasyD
 d:\Mason\documents\visual studio 2013\Projects\EasyDraw\EasyDraw\obj\Debug\EasyDraw.csprojResolveAssemblyReference.cache
 d:\Mason\documents\visual studio 2013\Projects\EasyDraw\EasyDraw\obj\Debug\ColorForm.baml
 d:\Mason\documents\visual studio 2013\Projects\EasyDraw\EasyDraw\obj\Debug\ColorForm.g.cs
+D:\Mason\Documents\Visual Studio 2013\Projects\EasyDraw\EasyDraw\bin\Debug\Microsoft.Ink.dll
+D:\Mason\Documents\Visual Studio 2013\Projects\EasyDraw\EasyDraw\bin\Debug\Microsoft.Ink.xml
+D:\Mason\Documents\Visual Studio 2013\Projects\EasyDraw\EasyDraw\obj\Debug\RecognizedText.baml
+D:\Mason\Documents\Visual Studio 2013\Projects\EasyDraw\EasyDraw\obj\Debug\RecognizedText.g.cs
