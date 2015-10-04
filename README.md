@@ -10,4 +10,4 @@ Also, the pen type, size and colour is customizable.
 Finally, there is also handwriting recognition.
 
 ## download
-You can compile the source, or you can download the zip file of binaries [here](https://github.com/ohnx/EasyDraw/releases/download/v2.0/bin.zip). The current version is v2.0. Other releases can be found on the [releases page](https://github.com/ohnx/EasyDraw/releases).
+You can compile the source, or you can download the zip file of binaries [here](https://github.com/ohnx/EasyDraw/releases/download/v2.1/bin.zip). The current version is v2.1. Other releases can be found on the [releases page](https://github.com/ohnx/EasyDraw/releases).
