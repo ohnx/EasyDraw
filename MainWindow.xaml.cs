@@ -13,7 +13,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Ink;
 using Microsoft.Ink;
 
@@ -26,7 +25,7 @@ namespace EasyDraw
     {
         private Color currColor;
         private Boolean changed;
-        private String lastFile;
+        private String currFile;
         public MainWindow()
         {
             InitializeComponent();
@@ -34,11 +33,17 @@ namespace EasyDraw
             changed = false;
             PenMode.IsChecked = true;
             inkCanvas.Strokes.StrokesChanged += Strokes_StrokesChanged;
+            this.Title += " - Untitled";
         }
 
         private void Strokes_StrokesChanged(object sender, StrokeCollectionChangedEventArgs e)
         {
+            if (changed)
+            {
+                return;
+            }
             changed = true;
+            this.Title += "*";
         }
 
         private void modeChange(object sender, RoutedEventArgs e)
@@ -149,25 +154,67 @@ namespace EasyDraw
             currColor = color.foundColor;
         }
 
-        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        private bool showSaveDialog()
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.Filter = "Stroke files (*.ink)|*.ink|All files (*.*)|*.*";
             saveFileDialog.Title = "Save drawing";
             if (saveFileDialog.ShowDialog() == true)
             {
-                try
+                currFile = saveFileDialog.FileName;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            bool needShowing = true;
+            try
+            {
+                if (((MenuItem)sender).Name == "SaveAsButton")
                 {
-                    var fs = new FileStream(saveFileDialog.FileName, FileMode.Create);
-                    lastFile = saveFileDialog.FileName;
-                    inkCanvas.Strokes.Save(fs);
-                    fs.Close();
-                    changed = false;
+                    if (!showSaveDialog())
+                    {
+                        return;
+                    }
+                    needShowing = false;
                 }
-                catch (Exception mitsake)
+            }
+            catch (Exception err)
+            {
+
+            }
+            if (currFile != null)
+            {
+
+            }
+            else
+            {
+                if (needShowing)
                 {
-                    MessageBox.Show("There was an error saving the file: " + mitsake.ToString(), "Error saving file", MessageBoxButton.OK, MessageBoxImage.Error);
+                    if (!showSaveDialog())
+                    {
+                        return;
+                    }
                 }
+            }
+            try
+            {
+                var fs = new FileStream(currFile, FileMode.Create);
+                inkCanvas.Strokes.Save(fs);
+                fs.Close();
+                changed = false;
+                this.Title = "EasyDraw - " + Path.GetFileName(currFile);
+            }
+            catch (Exception mitsake)
+            {
+                MessageBox.Show("There was an error saving the file: " + mitsake.ToString(), "Error saving file", MessageBoxButton.OK, MessageBoxImage.Error);
+                changed = true;
+                this.Title += "*";
             }
         }
 
@@ -188,8 +235,12 @@ namespace EasyDraw
                     var fs = new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read);
                     StrokeCollection strokes = new StrokeCollection(fs);
                     inkCanvas.Strokes = strokes;
-                    lastFile = openFileDialog.FileName;
+                    currFile = openFileDialog.FileName;
                     changed = false;
+                    this.Title = "EasyDraw - " + Path.GetFileName(currFile);
+                    // don't know why this is needed
+                    inkCanvas.Strokes.StrokesChanged += Strokes_StrokesChanged;
+                    fs.Close();
                 }
                 catch (Exception mitsake)
                 {
@@ -201,13 +252,45 @@ namespace EasyDraw
 
         private void ClearButton_Click(object sender, RoutedEventArgs e)
         {
+            string msg;
+            try
+            {
+                if (((MenuItem)sender).Name == "ClearButton")
+                {
+                    msg = "The canvas has been changed. Are you sure you want to clear the canvas?";
+                }
+                else
+                {
+                    msg = "The file has been changed. Are you sure you want to create a new file?";
+                }
+            }
+            catch (Exception err)
+            {
+                msg = "The file has been changed. Are you sure you want to create a new file?";
+            }
+
             if (changed)
             {
-                if (MessageBox.Show("The file has been changed. Are you sure you want to clear the file?", "Destroy changes?", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
+                if (MessageBox.Show(msg, "Destroy changes?", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
                     return;
+                changed = true;
+            }
+
+            try
+            {
+                if (((MenuItem)sender).Name != "ClearButton")
+                {
+                    this.Title = "EasyDraw - Untitled";
+                    currFile = null;
+                }
+            }
+            catch (Exception err)
+            {
+                this.Title = "EasyDraw - Untitled";
+                currFile = null;
             }
             this.inkCanvas.Strokes.Clear();
-            changed = false;
+
         }
 
         private void ExitButton_Click(object sender, RoutedEventArgs e)
