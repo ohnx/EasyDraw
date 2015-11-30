@@ -29,3 +29,5 @@ D:\Mason\Documents\Visual Studio 2013\Projects\EasyDraw\EasyDraw\bin\Debug\ja-JP
 D:\Mason\Documents\Visual Studio 2013\Projects\EasyDraw\EasyDraw\bin\Debug\nl-NL\ColorPickerLib.resources.dll
 D:\Mason\Documents\Visual Studio 2013\Projects\EasyDraw\EasyDraw\bin\Debug\zh-CHS\ColorPickerLib.resources.dll
 D:\Mason\Documents\Visual Studio 2013\Projects\EasyDraw\EasyDraw\bin\Debug\zh-CHT\ColorPickerLib.resources.dll
+D:\Mason\Documents\Visual Studio 2013\Projects\EasyDraw\EasyDraw\bin\Debug\Unity3.Eyedropper.dll
+D:\Mason\Documents\Visual Studio 2013\Projects\EasyDraw\EasyDraw\bin\Debug\Unity3.Eyedropper.pdb

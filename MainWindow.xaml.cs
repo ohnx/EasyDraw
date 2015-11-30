@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Ink;
 using Microsoft.Ink;
+using Unity3.Eyedropper;
 
 namespace EasyDraw
 {
@@ -30,6 +31,7 @@ namespace EasyDraw
         public MainWindow()
         {
             InitializeComponent();
+            this.Loaded += Window_Loaded;
             currColor = Colors.Black;
             changed = false;
             PenMode.IsChecked = true;
@@ -37,6 +39,26 @@ namespace EasyDraw
             this.Title += " - Untitled";
             _colorCanvas.SelectedColorChanged += colorCanvas_colorChanged;
             botherUpdatingBrushSize = true;
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            // Create the interop host control.
+            System.Windows.Forms.Integration.WindowsFormsHost host =
+                new System.Windows.Forms.Integration.WindowsFormsHost();
+
+            EyeDropper eD = new EyeDropper();
+            eD.ScreenCaptured += eyeDropper1_ScreenCaptured;
+            // Assign the MaskedTextBox control as the host control's child.
+            host.Child = eD;
+            // Add the interop host control to the Grid
+            // control's collection of child controls.
+            this.eyeDropperHost.Children.Add(host);
+        }
+
+        private void eyeDropper1_ScreenCaptured(System.Drawing.Bitmap cP, System.Drawing.Color cC)
+        {
+            _colorCanvas.SelectedColor = Color.FromRgb(cC.R, cC.G, cC.B);
         }
 
         private void colorCanvas_colorChanged(object sender, EventArgs e)

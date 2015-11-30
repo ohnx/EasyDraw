@@ -44,6 +44,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -55,6 +57,7 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -122,6 +125,10 @@
     <ProjectReference Include="..\..\..\..\..\Downloads\ColorPick\ColorPickerLib\ColorPickerLib.csproj">
       <Project>{e64ce47c-10a6-490e-b1b1-84f00fd6c1d2}</Project>
       <Name>ColorPickerLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\Downloads\Unity3.Eyedropper\Unity3.Eyedropper\Unity3.Eyedropper.csproj">
+      <Project>{66e06288-628c-4c14-ba4f-21a777a12f4d}</Project>
+      <Name>Unity3.Eyedropper</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
