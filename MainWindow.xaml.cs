@@ -26,6 +26,7 @@ namespace EasyDraw
         private Color currColor;
         private Boolean changed;
         private String currFile;
+        private Boolean botherUpdatingBrushSize;
         public MainWindow()
         {
             InitializeComponent();
@@ -34,6 +35,14 @@ namespace EasyDraw
             PenMode.IsChecked = true;
             inkCanvas.Strokes.StrokesChanged += Strokes_StrokesChanged;
             this.Title += " - Untitled";
+            _colorCanvas.SelectedColorChanged += colorCanvas_colorChanged;
+            botherUpdatingBrushSize = true;
+        }
+
+        private void colorCanvas_colorChanged(object sender, EventArgs e)
+        {
+            inkCanvas.DefaultDrawingAttributes.Color = (Color) _colorCanvas.SelectedColor;
+            currColor = (Color)_colorCanvas.SelectedColor;
         }
 
         private void Strokes_StrokesChanged(object sender, StrokeCollectionChangedEventArgs e)
@@ -85,15 +94,22 @@ namespace EasyDraw
 
         private void brushSize_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            try
-            {
-                inkCanvas.DefaultDrawingAttributes.Width = brushSize.Value * brushSize.Value;
-                inkCanvas.DefaultDrawingAttributes.Height = brushSize.Value * brushSize.Value;
-            }
-            catch (Exception err)
-            {
+            if (!botherUpdatingBrushSize) return;
+            inkCanvas.DefaultDrawingAttributes.Width = brushSize.Value * brushSize.Value;
+            inkCanvas.DefaultDrawingAttributes.Height = brushSize.Value * brushSize.Value;
+            botherUpdatingBrushSize = false;
+            mainSlider.Value = brushSize.Value;
+            botherUpdatingBrushSize = true;
+        }
 
-            }
+        private void mainSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (!botherUpdatingBrushSize) return;
+            inkCanvas.DefaultDrawingAttributes.Width = mainSlider.Value * mainSlider.Value;
+            inkCanvas.DefaultDrawingAttributes.Height = mainSlider.Value * mainSlider.Value;
+            botherUpdatingBrushSize = false;
+            brushSize.Value = mainSlider.Value;
+            botherUpdatingBrushSize = true;
 
         }
 
@@ -150,8 +166,7 @@ namespace EasyDraw
         {
             ColorForm color = new ColorForm(currColor);
             color.ShowDialog();
-            inkCanvas.DefaultDrawingAttributes.Color = color.foundColor;
-            currColor = color.foundColor;
+            _colorCanvas.SelectedColor = color.foundColor;
         }
 
         private bool showSaveDialog()

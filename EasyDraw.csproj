@@ -118,6 +118,12 @@
   <ItemGroup>
     <Resource Include="drawicon.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\Downloads\ColorPick\ColorPickerLib\ColorPickerLib.csproj">
+      <Project>{e64ce47c-10a6-490e-b1b1-84f00fd6c1d2}</Project>
+      <Name>ColorPickerLib</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

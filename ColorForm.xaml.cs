@@ -26,11 +26,12 @@ namespace EasyDraw
         public ColorForm()
         {
             InitializeComponent();
-            cCanvas.Background = new SolidColorBrush(Color.FromRgb(0, 0, 0));
+            _colorCanvas.SelectedColor = Color.FromRgb(0, 0, 0);
             redSlider.Value = 0;
             blueSlider.Value = 0;
             greenSlider.Value = 0;
             original = Color.FromRgb(0, 0, 0);
+            _colorCanvas.SelectedColorChanged += changedColor;
         }
 
         public ColorForm(Color c)
@@ -40,7 +41,18 @@ namespace EasyDraw
             blueSlider.Value = c.B;
             greenSlider.Value = c.G;
             original = c;
-            cCanvas.Background = new SolidColorBrush(c);
+            _colorCanvas.SelectedColor = c;
+            _colorCanvas.SelectedColorChanged += changedColor;
+        }
+
+        private void changedColor(object s, EventArgs e)
+        {
+            botherUpdating = false;
+            redSlider.Value = ((Color)_colorCanvas.SelectedColor).R;
+            greenSlider.Value = ((Color)_colorCanvas.SelectedColor).G;
+            blueSlider.Value = ((Color)_colorCanvas.SelectedColor).B;
+            botherUpdating = true;
+            updateColor(0);
         }
 
         private void redSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -58,20 +70,6 @@ namespace EasyDraw
             updateColor(0);
         }
 
-        private void redBtn_Click(object sender, RoutedEventArgs e)
-        {
-            updateColor(1);
-        }
-
-        private void blueBtn_Click(object sender, RoutedEventArgs e)
-        {
-            updateColor(2);
-        }
-
-        private void greenBtn_Click(object sender, RoutedEventArgs e)
-        {
-            updateColor(3);
-        }
 
         private void updateColor(int isButton)
         {
@@ -81,92 +79,18 @@ namespace EasyDraw
             }
             if (isButton == 0)
             {
-                cCanvas.Background = new SolidColorBrush(Color.FromRgb((byte)redSlider.Value, (byte)greenSlider.Value, (byte)blueSlider.Value));
+                _colorCanvas.SelectedColor = Color.FromRgb((byte)redSlider.Value, (byte)greenSlider.Value, (byte)blueSlider.Value);
                 redTxt.Text = Convert.ToString(redSlider.Value);
                 greenTxt.Text = Convert.ToString(greenSlider.Value);
                 blueTxt.Text = Convert.ToString(blueSlider.Value);
             }
-            else if (isButton == 1)
-            {
-                //cCanvas.Background = new SolidColorBrush(Color.FromRgb(255, 0, 0));
-                redSlider.Value = 255;
-                redTxt.Text = "255";
-                blueSlider.Value = 0;
-                blueTxt.Text = "0";
-                greenSlider.Value = 0;
-                greenTxt.Text = "0";
-            }
-            else if (isButton == 2)
-            {
-                //cCanvas.Background = new SolidColorBrush(Color.FromRgb(255, 0, 0));
-                redSlider.Value = 0;
-                redTxt.Text = "0";
-                blueSlider.Value = 255;
-                blueTxt.Text = "255";
-                greenSlider.Value = 0;
-                greenTxt.Text = "0";
-            }
-            else if (isButton == 3)
-            {
-                //cCanvas.Background = new SolidColorBrush(Color.FromRgb(255, 0, 0));
-                redSlider.Value = 0;
-                redTxt.Text = "0";
-                blueSlider.Value = 0;
-                blueTxt.Text = "0";
-                greenSlider.Value = 255;
-                greenTxt.Text = "255";
-            }
-            else if (isButton == 4)
-            {
-                //cCanvas.Background = new SolidColorBrush(Color.FromRgb(255, 0, 0));
-                redSlider.Value = 0;
-                redTxt.Text = "0";
-                blueSlider.Value = 0;
-                blueTxt.Text = "0";
-                greenSlider.Value = 0;
-                greenTxt.Text = "0";
-            }
-            else if (isButton == 5)
-            {
-                //cCanvas.Background = new SolidColorBrush(Color.FromRgb(255, 0, 0));
-                redSlider.Value = 255;
-                redTxt.Text = "255";
-                blueSlider.Value = 0;
-                blueTxt.Text = "0";
-                greenSlider.Value = 255;
-                greenTxt.Text = "255";
-            }
-            else if (isButton == 6)
-            {
-                //cCanvas.Background = new SolidColorBrush(Color.FromRgb(255, 0, 0));
-                redSlider.Value = 255;
-                redTxt.Text = "255";
-                blueSlider.Value = 130;
-                blueTxt.Text = "130";
-                greenSlider.Value = 90;
-                greenTxt.Text = "90";
-            }
-        }
 
-        private void blackBtn_Click(object sender, RoutedEventArgs e)
-        {
-            updateColor(4);
-        }
-
-        private void pinkBtn_Click(object sender, RoutedEventArgs e)
-        {
-            updateColor(6);
         }
 
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
-        }
-
-        private void yellowBtn_Click(object sender, RoutedEventArgs e)
-        {
-            updateColor(5);
         }
 
         private void loadRGB_Click(object sender, RoutedEventArgs e)
