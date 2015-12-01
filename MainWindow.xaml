@@ -1,9 +1,10 @@
 ﻿<Window x:Class="EasyDraw.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                xmlns:sys="clr-namespace:System;assembly=mscorlib"
-                xmlns:xctk="clr-namespace:ColorPickerLib;assembly=ColorPickerLib"
-                xmlns:controls="clr-namespace:ColorPickerLib.Controls;assembly=ColorPickerLib"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:xctk="clr-namespace:ColorPickerLib;assembly=ColorPickerLib"
+        xmlns:controls="clr-namespace:ColorPickerLib.Controls;assembly=ColorPickerLib"
+        xmlns:eyedropper="clr-namespace:Unity3.Eyedropper;assembly=Unity3.Eyedropper"  
         Title="EasyDraw" Height="626" Width="979" Background="#FFACACAC" Icon="drawicon.ico">
     <Window.CommandBindings>
         <CommandBinding Command="New" Executed="ClearButton_Click" />
@@ -36,6 +37,7 @@
             <MenuItem Header="Canvas">
                 <MenuItem x:Name="ClearButton" Click="ClearButton_Click" Header="Clear"/>
                 <MenuItem x:Name="RecognizeButton" Click="RecognizeButton_Click" Header="_Recognize" />
+                <MenuItem x:Name="AllowTouchMenuItem" Header="Allow touches" IsCheckable="True" Checked="handleTouch_Changed" Unchecked="handleTouch_Changed" IsChecked="True" />
             </MenuItem>
         </Menu>
         <Grid Background="#FFF0F0F0">
@@ -43,11 +45,12 @@
                 <ColumnDefinition Width="200"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <controls:ColorCanvas x:Name="_colorCanvas"
-                                   VerticalAlignment="Top" Height="200"/>
-            
-            <Slider x:Name="mainSlider" HorizontalAlignment="Left" Margin="0,200,0,0" VerticalAlignment="Top" Minimum="1" ValueChanged="mainSlider_ValueChanged" Maximum="10" Width="200" Value="1"/>
-            <Grid x:Name="eyeDropperHost" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,223,0,0"></Grid>
+            <controls:ColorCanvas x:Name="_colorCanvas" VerticalAlignment="Top" Height="200"/>
+            <CheckBox x:Name="AllowTouchCheckbox" Content="Allow touches" HorizontalAlignment="Left" Margin="10,204,0,0" VerticalAlignment="Top" Checked="handleTouch_Changed" Unchecked="handleTouch_Changed" IsChecked="True" />
+            <WindowsFormsHost  VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,200,10,0" >
+                <eyedropper:EyeDropper x:Name="eyeDropper" ScreenCaptured="eyeDropper1_ScreenCaptured" />
+            </WindowsFormsHost>
+            <Slider x:Name="mainSlider" HorizontalAlignment="Left" Margin="7,230,7,0" VerticalAlignment="Top" Minimum="1" ValueChanged="mainSlider_ValueChanged" Maximum="10" Width="186" Value="1"/>
             <InkCanvas x:Name="inkCanvas" Grid.Column="1" />
         </Grid>
 

@@ -27,7 +27,15 @@ namespace EasyDraw
         private Color currColor;
         private Boolean changed;
         private String currFile;
+        // I learned about something the other day.
+        // It's called detaching and attaching event handlers.
+        // It's an alternative to all these bother<doingSomething> bools.
+        // Maybe I should fix this.
         private Boolean botherUpdatingBrushSize;
+        private Boolean handleTouch;
+        private Boolean botherHandlingTouchChange;
+        private Boolean windowDoneLoading;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -39,10 +47,14 @@ namespace EasyDraw
             this.Title += " - Untitled";
             _colorCanvas.SelectedColorChanged += colorCanvas_colorChanged;
             botherUpdatingBrushSize = true;
+            botherHandlingTouchChange = true;
+            inkCanvas.PreviewTouchDown += InkCanvas_PreviewTouchDown;
+            windowDoneLoading = true;
+            _colorCanvas.SelectedColor = Color.FromRgb(0, 0, 0);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
+        {/*
             // Create the interop host control.
             System.Windows.Forms.Integration.WindowsFormsHost host =
                 new System.Windows.Forms.Integration.WindowsFormsHost();
@@ -53,7 +65,12 @@ namespace EasyDraw
             host.Child = eD;
             // Add the interop host control to the Grid
             // control's collection of child controls.
-            this.eyeDropperHost.Children.Add(host);
+            this.eyeDropperHost.Children.Add(host);*/
+        }
+
+        private void InkCanvas_PreviewTouchDown(object sender, TouchEventArgs e)
+        {
+            e.Handled = !handleTouch;
         }
 
         private void eyeDropper1_ScreenCaptured(System.Drawing.Bitmap cP, System.Drawing.Color cC)
@@ -77,9 +94,36 @@ namespace EasyDraw
             this.Title += "*";
         }
 
+        private void handleTouch_Changed(object sender, EventArgs e)
+        {
+            if (!botherHandlingTouchChange) return;
+            try
+            {
+                handleTouch = ((MenuItem)sender).IsChecked;
+                botherHandlingTouchChange = false;
+                AllowTouchCheckbox.IsChecked = ((MenuItem)sender).IsChecked;
+                botherHandlingTouchChange = true;
+            }
+            catch (InvalidCastException err)
+            {
+                try
+                {
+                    handleTouch = (((CheckBox)sender).IsChecked) ?? false;
+                    botherHandlingTouchChange = false;
+                    AllowTouchMenuItem.IsChecked = (((CheckBox)sender).IsChecked) ?? false;
+                    botherHandlingTouchChange = true;
+                }
+                catch (Exception err2)
+                {
+                    // flip table
+                }
+            }
+
+        }
+
         private void modeChange(object sender, RoutedEventArgs e)
         {
-            try {
+            if(!windowDoneLoading) return;
                 switch (((MenuItem)sender).Name)
                 {
                     case "PenMode":
@@ -109,9 +153,6 @@ namespace EasyDraw
                     default:
                         break;
                 }
-            } catch (Exception err) {
-
-            }
         }
 
         private void brushSize_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)

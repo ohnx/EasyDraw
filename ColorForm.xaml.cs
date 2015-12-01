@@ -23,15 +23,25 @@ namespace EasyDraw
         public Color foundColor { get; set; } 
         private Boolean botherUpdating = true;
         private Color original;
+        private Boolean botherTextUpdating;
+
         public ColorForm()
         {
             InitializeComponent();
+            botherTextUpdating = true;
             _colorCanvas.SelectedColor = Color.FromRgb(0, 0, 0);
             redSlider.Value = 0;
             blueSlider.Value = 0;
             greenSlider.Value = 0;
+            botherTextUpdating = true;
             original = Color.FromRgb(0, 0, 0);
             _colorCanvas.SelectedColorChanged += changedColor;
+            oldColorBox.Fill = new SolidColorBrush(original);
+            botherTextUpdating = true;
+            botherTextUpdating = true;
+            botherTextUpdating = true;
+            botherTextUpdating = true;
+            botherTextUpdating = true;
         }
 
         public ColorForm(Color c)
@@ -43,6 +53,7 @@ namespace EasyDraw
             original = c;
             _colorCanvas.SelectedColor = c;
             _colorCanvas.SelectedColorChanged += changedColor;
+            oldColorBox.Fill = new SolidColorBrush(original);
         }
 
         private void changedColor(object s, EventArgs e)
@@ -70,6 +81,15 @@ namespace EasyDraw
             updateColor(0);
         }
 
+        private void eyeDropper1_ScreenCaptured(System.Drawing.Bitmap cP, System.Drawing.Color cC)
+        {
+            botherUpdating = false;
+            redSlider.Value = cC.R;
+            greenSlider.Value = cC.G;
+            blueSlider.Value = cC.B;
+            botherUpdating = true;
+            updateColor(0);
+        }
 
         private void updateColor(int isButton)
         {
@@ -79,10 +99,13 @@ namespace EasyDraw
             }
             if (isButton == 0)
             {
-                _colorCanvas.SelectedColor = Color.FromRgb((byte)redSlider.Value, (byte)greenSlider.Value, (byte)blueSlider.Value);
+                Console.Out.WriteLine("Got here! " + botherTextUpdating);
+                Color newColor = Color.FromRgb((byte)redSlider.Value, (byte)greenSlider.Value, (byte)blueSlider.Value);
+                _colorCanvas.SelectedColor = newColor;
                 redTxt.Text = Convert.ToString(redSlider.Value);
                 greenTxt.Text = Convert.ToString(greenSlider.Value);
                 blueTxt.Text = Convert.ToString(blueSlider.Value);
+                newColorBox.Fill = new SolidColorBrush(newColor);
             }
 
         }
@@ -95,11 +118,17 @@ namespace EasyDraw
 
         private void loadRGB_Click(object sender, RoutedEventArgs e)
         {
+            // *flips table* there is no reason for botherTextUpdating to be false!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            Console.Out.WriteLine("Got! " + botherTextUpdating);
+            if (!botherTextUpdating) return;
+            Console.Out.WriteLine("Wat! " + botherTextUpdating);
             botherUpdating = false;
+            botherTextUpdating = false;
             redSlider.Value = Convert.ToDouble(redTxt.Text);
             blueSlider.Value = Convert.ToDouble(blueTxt.Text);
             greenSlider.Value = Convert.ToDouble(greenTxt.Text);
             botherUpdating = true;
+            botherTextUpdating = true;
             updateColor(0);
         }
 
